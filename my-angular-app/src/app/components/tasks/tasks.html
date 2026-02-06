@@ -1,0 +1,8 @@
+<section class="tasks">
+  <h2>Tasks</h2>
+  <ul>
+    @for (task of tasks; track task.id) {
+      <li>{{ task.summary }} - {{ task.reporterName }} -> {{ task.assigneeName }}</li>
+    }
+  </ul>
+</section>
