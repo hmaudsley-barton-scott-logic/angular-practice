@@ -9,7 +9,7 @@ import { TaskService } from '../../services/task.service';
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  tasks: TaskModel[] | undefined;
+  tasks: TaskModel[] = [];
 
   private taskService = inject(TaskService);
 
@@ -24,7 +24,7 @@ export class Tasks {
   loadTasks() {
     console.log('Loading tasks...');
     this.taskService.getTasks().subscribe((data) => {
-      this.tasks = data;
+      this.tasks = Array.isArray(data) ? data : [];
       console.log('Tasks loaded:', this.tasks);
     });
   }

@@ -18,8 +18,10 @@ RUN chown user:user /app
 
 USER user
 
-ARG PROFILE
-ENV SPRING_PROFILES_ACTIVE=LOCAL
+ARG PROFILE=local
+ARG ALLOWED_ORIGINS
+ENV SPRING_PROFILES_ACTIVE=local
+ENV APP_ALLOWED_ORIGINS=$ALLOWED_ORIGINS
 
 # Copy the built jar from the build stage
 COPY --from=build --chown=user:user /app/target/*.jar app.jar

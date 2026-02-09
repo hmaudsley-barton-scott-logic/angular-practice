@@ -29,7 +29,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column
     @GeneratedValue
     private UUID id;

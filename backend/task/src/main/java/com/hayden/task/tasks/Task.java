@@ -30,7 +30,6 @@ public class Task {
 
     @Id
     @Column
-    @JdbcTypeCode(SqlTypes.VARCHAR)
     @GeneratedValue
     private UUID id;
 

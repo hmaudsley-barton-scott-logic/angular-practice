@@ -15,13 +15,14 @@ services:
     build:
       context: backend/task
       args:
-        Environment: Development
-        AllowedOrigins: http://localhost:${FRONTEND_PORT}
+        PROFILE: local
+        ALLOWED_ORIGINS: http://localhost:${FRONTEND_PORT}
     ports:
       - '8080:8080'
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tasks_db
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_ALLOWED_ORIGINS: http://localhost:${FRONTEND_PORT}
     depends_on:
       - db

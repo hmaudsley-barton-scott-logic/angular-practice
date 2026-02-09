@@ -3,19 +3,19 @@ CREATE DATABASE tasks_db;
 \c tasks_db
 
 CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(255) PRIMARY KEY,
+    id UUID PRIMARY KEY,
     user_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
-    id VARCHAR(255) PRIMARY KEY,
-    summary VARCHAR(255) NOT NULL,
+    id UUID PRIMARY KEY,
+    summary TEXT NOT NULL,
     details TEXT NOT NULL,
     creation_date TIMESTAMP NOT NULL,
     updated_date TIMESTAMP NOT NULL,
-    assignee_id VARCHAR(255) REFERENCES users(id),
-    reporter_id VARCHAR(255) REFERENCES users(id),
-    super_task VARCHAR(255) REFERENCES tasks(id)
+    assignee_id UUID REFERENCES users(id),
+    reporter_id UUID REFERENCES users(id),
+    super_task UUID REFERENCES tasks(id)
 );
 
 -- Insert placeholder users
