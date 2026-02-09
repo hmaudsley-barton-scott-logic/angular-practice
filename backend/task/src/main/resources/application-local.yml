@@ -6,3 +6,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 spring.jpa.hibernate.ddl-auto: update
+
+app:
+  allowed-origins: 'http://localhost:4200'
