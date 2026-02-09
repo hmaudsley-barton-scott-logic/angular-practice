@@ -26,7 +26,7 @@ USER user
 ARG PROFILE
 ARG ALLOWED_ORIGINS
 ENV SPRING_PROFILES_ACTIVE=${PROFILE}
-ENV APP_ALLOWED_ORIGINS=$ALLOWED_ORIGINS
+ENV APP_ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
 
 # Copy the built jar from the build stage
 COPY --from=build --chown=user:user /app/target/*.jar app.jar
