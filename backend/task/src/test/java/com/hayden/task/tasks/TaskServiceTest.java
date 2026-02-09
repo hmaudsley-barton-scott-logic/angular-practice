@@ -1,5 +1,6 @@
 package com.hayden.task.tasks;
 
+import com.hayden.task.users.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,9 +27,15 @@ class TaskServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    UUID task1 = UUID.randomUUID();
+    UUID aliceId = UUID.randomUUID();
+    User alice = User.builder().id(aliceId).userName("alice").build();
+    UUID bobId = UUID.randomUUID();
+    User bob = User.builder().id(bobId).userName("bob").build();
+
     @Test
     void getAllTasks_returnsTaskDtos() {
-        Task task = new Task();
+        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findAll()).thenReturn(tasks);
         List<TaskDto> result = taskService.getAllTasks();
@@ -37,21 +44,19 @@ class TaskServiceTest {
 
     @Test
     void getTasksByReporter_returnsTaskDtos() {
-        UUID reporterId = UUID.randomUUID();
-        Task task = new Task();
+        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
-        when(taskRepository.findByReporterId(reporterId)).thenReturn(tasks);
-        List<TaskDto> result = taskService.getTasksByReporter(reporterId);
+        when(taskRepository.findByReporterId(aliceId)).thenReturn(tasks);
+        List<TaskDto> result = taskService.getTasksByReporter(aliceId);
         assertThat(result).hasSize(1);
     }
 
     @Test
     void getTasksByAssignee_returnsTaskDtos() {
-        UUID assigneeId = UUID.randomUUID();
-        Task task = new Task();
+        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
-        when(taskRepository.findByAssigneeId(assigneeId)).thenReturn(tasks);
-        List<TaskDto> result = taskService.getTasksByAssignee(assigneeId);
+        when(taskRepository.findByAssigneeId(bobId)).thenReturn(tasks);
+        List<TaskDto> result = taskService.getTasksByAssignee(bobId);
         assertThat(result).hasSize(1);
     }
 

@@ -13,8 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -45,7 +43,7 @@ public class Task {
     @Column
     private OffsetDateTime updatedDate;
 
-    @OneToMany(mappedBy="id")
+    @OneToMany(mappedBy = "id")
     @Column
     private List<Task> subtasks;
 
@@ -54,7 +52,7 @@ public class Task {
     private User assignee;
 
     @ManyToOne
-    @JoinColumn(name="reporter_id")
+    @JoinColumn(name = "reporter_id")
     private User reporter;
 
     @ManyToOne
@@ -62,7 +60,7 @@ public class Task {
     private Task superTask;
 
 
-    public TaskDto toDto(){
+    public TaskDto toDto() {
         return TaskDto.builder()
                 .id(this.getId())
                 .reporterId(this.getReporter().getId())
