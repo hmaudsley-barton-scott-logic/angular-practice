@@ -5,7 +5,12 @@ WORKDIR /app
 
 # Copy & Build Dependencies
 COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy Source Code
 COPY src ./src       
+
+# Build Application
 RUN mvn clean package -DskipTests
 
 # Create Runtime Stage
@@ -18,9 +23,9 @@ RUN chown user:user /app
 
 USER user
 
-ARG PROFILE=local
+ARG PROFILE
 ARG ALLOWED_ORIGINS
-ENV SPRING_PROFILES_ACTIVE=local
+ENV SPRING_PROFILES_ACTIVE=${PROFILE}
 ENV APP_ALLOWED_ORIGINS=$ALLOWED_ORIGINS
 
 # Copy the built jar from the build stage
