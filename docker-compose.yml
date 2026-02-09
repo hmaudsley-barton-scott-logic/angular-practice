@@ -10,6 +10,11 @@ services:
       - '5432:5432'
     volumes:
       - ./infastructure/local-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d mydb']
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     container_name: backend
     build:
@@ -25,4 +30,5 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       APP_ALLOWED_ORIGINS: http://localhost:${FRONTEND_PORT}
     depends_on:
-      - db
+      db:
+        condition: service_healthy

@@ -23,4 +23,8 @@ export class TaskService {
   getTasks(): Observable<TaskModel[]> {
     return this.http.get<TaskModel[]>(this.tasksUrl);
   }
+
+  notifyRefresh() {
+    this.refreshSubject.next();
+  }
 }

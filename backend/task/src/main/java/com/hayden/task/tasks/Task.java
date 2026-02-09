@@ -68,7 +68,7 @@ public class Task {
                 .reporterId(this.getReporter().getId())
                 .assigneeId(this.getAssignee().getId())
                 .reporterName(this.getReporter().getUserName())
-                .assigneeName(this.getReporter().getUserName())
+                .assigneeName(this.getAssignee().getUserName())
                 .details(this.getDetails())
                 .summary(this.getSummary())
                 .updatedDate(this.getUpdatedDate())
