@@ -2,7 +2,6 @@ package com.hayden.task.users;
 
 
 import com.hayden.task.tasks.Task;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,9 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +25,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column
     @GeneratedValue
     private UUID id;

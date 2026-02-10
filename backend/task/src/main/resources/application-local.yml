@@ -1,5 +1,11 @@
-spring.datasource.url: jdbc:postgresql://localhost:5432/mydb
-spring.datasource.username: user
-spring.datasource.password: pass
-spring.datasource.driver-class-name: org.postgresql.Driver
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tasks_db
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
 spring.jpa.hibernate.ddl-auto: update
+
+app:
+  allowed-origins: 'http://localhost:4200'
