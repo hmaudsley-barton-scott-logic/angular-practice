@@ -32,6 +32,12 @@ public class Task {
     private UUID id;
 
     @Column
+    private String code;
+
+    @Column
+    private String status;
+
+    @Column
     private String summary;
 
     @Column
@@ -66,6 +72,8 @@ public class Task {
     public TaskDto toDto() {
         return TaskDto.builder()
                 .id(this.getId())
+                .code(this.getCode())
+                .status(this.getStatus())
                 .reporterId(this.getReporter().getId())
                 .assigneeId(this.getAssignee().getId())
                 .reporterName(this.getReporter().getUserName())

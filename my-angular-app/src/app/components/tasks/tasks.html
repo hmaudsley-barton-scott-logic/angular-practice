@@ -1,6 +1,6 @@
+<h2>Tasks</h2>
 <section class="tasks">
-  <h2>Tasks</h2>
   @for (task of tasks(); track task.id) {
-    <app-task [task]="task" />
+    <app-task-preview [task]="task" />
   }
 </section>

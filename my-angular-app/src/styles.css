@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+:root {
+  --ink: #676746;
+  --muted: #768284;
+  --accent: #0f6b6b;
+  --accent-2: #f4b860;
+  --card-bg: #efede8;
+  --card-border: #efede8;
+  display: block;
+  padding: 24px 16px;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  margin: 0;
+}

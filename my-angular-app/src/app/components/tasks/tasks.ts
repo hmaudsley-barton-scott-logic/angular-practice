@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TaskModel } from '../../types/TaskModel';
 import { TaskService } from '../../services/task.service';
-import { Task } from '../task/task';
+import { TaskPreview } from '../task-preview/task-preview';
 
 @Component({
   selector: 'app-tasks',
-  imports: [Task],
+  imports: [TaskPreview],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })

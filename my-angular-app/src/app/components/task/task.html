@@ -1,13 +1,46 @@
-<section class="taskBox">
-  <section class="taskHeader">
-    <h3>
-      <a href="tasks/{{ task().id }}">{{ task().summary }}</a>
-    </h3>
-  </section>
-  <section class="taskDetails">
-    <p>{{ task().details }}</p>
-    <p>Created: {{ task().creationDate | date }}</p>
-    <p>Updated: {{ task().updatedDate | date }}</p>
-    <p>Due: {{ task().dueDate | date }}</p>
-  </section>
+<header class="task-card__header">
+  <div class="task-card__title">
+    <p class="task-card__eyebrow">Task</p>
+    <h3>{{ task().summary }}</h3>
+    <p class="task-card__id">{{ task().code }}</p>
+  </div>
+  <div class="key-facts">
+    <div class="task-card__status">
+      <strong>{{ task().status }}</strong>
+    </div>
+    <div class="task-card__date">
+      <span>Due</span>
+      <strong>{{ task().dueDate | date: 'mediumDate' }}</strong>
+    </div>
+    <div class="task-card__person">
+      <span>Assigned to:</span>
+      <strong>{{ task().assigneeName }}</strong>
+    </div>
+  </div>
+</header>
+<section class="task-card__body">
+  <details open="true">
+    <summary class="task-card__label">Details</summary>
+    <p class="task-card__details">{{ task().details }}</p>
+  </details>
+</section>
+<section class="task-card__info">
+  <details open="true">
+    <summary class="task-card__label">Additional Information</summary>
+    <div class="info__content">
+      <div class="task-card__person">
+        <span>Reported by:</span>
+        <strong>{{ task().reporterName }}</strong>
+      </div>
+
+      <div class="task-card__date">
+        <span>Created</span>
+        <strong>{{ task().creationDate | date: 'mediumDate' }}</strong>
+      </div>
+      <div class="task-card__date">
+        <span>Last Updated</span>
+        <strong>{{ task().updatedDate | date: 'mediumDate' }}</strong>
+      </div>
+    </div>
+  </details>
 </section>

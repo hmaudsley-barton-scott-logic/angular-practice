@@ -1,5 +1,7 @@
 export interface TaskModel {
   id: string;
+  code: string;
+  status: string;
   reporterId: string;
   assigneeId: string;
   reporterName: string;

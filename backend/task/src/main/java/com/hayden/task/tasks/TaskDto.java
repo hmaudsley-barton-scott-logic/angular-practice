@@ -17,6 +17,10 @@ import java.util.UUID;
 public class TaskDto {
     private UUID id;
 
+    private String code;
+
+    private String status;
+
     private UUID reporterId;
 
     private UUID assigneeId;
