@@ -32,4 +32,6 @@ public class TaskDto {
     private OffsetDateTime creationDate;
 
     private OffsetDateTime updatedDate;
+
+    private OffsetDateTime dueDate;
 }

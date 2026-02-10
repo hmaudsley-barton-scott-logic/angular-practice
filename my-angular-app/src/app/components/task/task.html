@@ -1,0 +1,13 @@
+<section class="taskBox">
+  <section class="taskHeader">
+    <h3>
+      <a href="tasks/{{ task().id }}">{{ task().summary }}</a>
+    </h3>
+  </section>
+  <section class="taskDetails">
+    <p>{{ task().details }}</p>
+    <p>Created: {{ task().creationDate | date }}</p>
+    <p>Updated: {{ task().updatedDate | date }}</p>
+    <p>Due: {{ task().dueDate | date }}</p>
+  </section>
+</section>
