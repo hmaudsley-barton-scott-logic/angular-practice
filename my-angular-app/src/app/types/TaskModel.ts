@@ -8,4 +8,5 @@ export interface TaskModel {
   details: string;
   creationDate: Date;
   updatedDate: Date;
+  dueDate: Date;
 }

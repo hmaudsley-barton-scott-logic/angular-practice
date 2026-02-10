@@ -43,6 +43,9 @@ public class Task {
     @Column
     private OffsetDateTime updatedDate;
 
+    @Column
+    private OffsetDateTime dueDate;
+
     @OneToMany(mappedBy = "id")
     @Column
     private List<Task> subtasks;
@@ -71,6 +74,7 @@ public class Task {
                 .summary(this.getSummary())
                 .updatedDate(this.getUpdatedDate())
                 .creationDate(this.getCreationDate())
+                .dueDate(this.getDueDate())
                 .build();
     }
 }
