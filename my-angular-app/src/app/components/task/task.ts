@@ -19,9 +19,12 @@ export class Task implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
-      this.taskId.set(params['taskId']);
+      const id = params['taskId'];
+      if (id) {
+        this.taskId.set(id);
+        this.getTask(id);
+      }
     });
-    this.getTask(this.taskId());
   }
 
   setTaskId(id: string) {
