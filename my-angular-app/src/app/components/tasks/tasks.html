@@ -1,6 +1,8 @@
 <h2>Tasks</h2>
 <section class="tasks">
-  @for (task of tasks(); track task.id) {
+  @for (task of tasks$ | async; track task.id) {
     <app-task-preview [task]="task" />
+  } @empty {
+    <p>No tasks found.</p>
   }
 </section>

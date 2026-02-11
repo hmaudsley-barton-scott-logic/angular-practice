@@ -1,30 +1,24 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TaskModel } from '../../types/TaskModel';
 import { TaskService } from '../../services/task.service';
 import { TaskPreview } from '../task-preview/task-preview';
+import { Observable, startWith, switchMap } from 'rxjs';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
-  imports: [TaskPreview],
+  imports: [TaskPreview, AsyncPipe, CommonModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
-export class Tasks implements OnInit {
-  private taskService = inject(TaskService);
-  tasks = signal<TaskModel[]>([]);
+export class Tasks {
+  taskService = inject(TaskService);
 
-  ngOnInit() {
-    this.loadTasks();
-    this.taskService.refresh$.subscribe(() => {
-      this.loadTasks();
-    });
-  }
+  // Get the reactive tasks observable from the service
 
-  loadTasks() {
-    console.log('Loading tasks...');
-    this.taskService.getTasks().subscribe((data) => {
-      this.tasks.set(data);
-      console.log('Tasks loaded:', this.tasks());
-    });
-  }
+  // Reactive observable that loads tasks on init and refresh
+  tasks$: Observable<TaskModel[]> = this.taskService.refresh$.pipe(
+    startWith(null), // Emit null initially to trigger first load
+    switchMap(() => this.taskService.getTasks()),
+  );
 }
