@@ -13,8 +13,8 @@ import { map, filter, switchMap, catchError } from 'rxjs/operators';
   styleUrl: './task.css',
 })
 export class Task {
-  taskService = inject(TaskService);
-  activatedRoute = inject(ActivatedRoute);
+  private readonly taskService = inject(TaskService);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   task$: Observable<TaskModel> = this.activatedRoute.paramMap.pipe(
     map((params) => params.get('taskId')),
