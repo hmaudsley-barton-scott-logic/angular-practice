@@ -32,8 +32,8 @@ public class TaskService {
                 .toList();
     }
 
-    List<TaskDto> getTasksByAssignee(UUID reporterId) {
-        return taskRepository.findByAssigneeId(reporterId)
+    List<TaskDto> getTasksByAssignee(UUID assigneeId) {
+        return taskRepository.findByAssigneeId(assigneeId)
                 .stream()
                 .map(Task::toDto)
                 .toList();
