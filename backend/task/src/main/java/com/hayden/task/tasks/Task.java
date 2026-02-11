@@ -31,10 +31,10 @@ public class Task {
     @GeneratedValue
     private UUID id;
 
-    @Column
+    @Column(nullable = false)
     private String code;
 
-    @Column
+    @Column(nullable = false)
     private String status;
 
     @Column
