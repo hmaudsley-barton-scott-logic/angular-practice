@@ -8,13 +8,13 @@
     <div class="task-card__status">
       <strong>{{ task().status }}</strong>
     </div>
-    <div class="task-card__date">
-      <span>Due</span>
-      <strong>{{ task().dueDate | date: 'mediumDate' }}</strong>
-    </div>
     <div class="task-card__person">
       <span>Assigned to:</span>
       <strong>{{ task().assigneeName }}</strong>
+    </div>
+    <div class="task-card__date">
+      <span>Due</span>
+      <strong>{{ task().dueDate | date: 'mediumDate' }}</strong>
     </div>
   </div>
 </header>
