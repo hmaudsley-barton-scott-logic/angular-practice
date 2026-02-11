@@ -1,6 +1,5 @@
 package com.hayden.task.users;
 
-import com.hayden.task.tasks.TaskNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class UserService {
 
     public UserDto getUser(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id));
         return user.toDto();
     }
 }
