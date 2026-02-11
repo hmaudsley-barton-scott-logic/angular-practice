@@ -7,8 +7,8 @@ export interface TaskModel {
   reporterName: string;
   assigneeName: string;
   summary: string;
-  details: string;
+  details?: string;
   creationDate: Date;
   updatedDate: Date;
-  dueDate: Date;
+  dueDate?: Date;
 }
