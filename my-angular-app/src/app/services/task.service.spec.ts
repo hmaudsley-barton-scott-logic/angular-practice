@@ -30,6 +30,8 @@ describe('TaskService', () => {
     const mockTasks: TaskModel[] = [
       {
         id: '1',
+        code: 'TASK-001',
+        status: 'To-Do',
         reporterId: 'r1',
         assigneeId: 'a1',
         reporterName: 'Reporter',
@@ -38,6 +40,7 @@ describe('TaskService', () => {
         details: 'Test details',
         creationDate: new Date(),
         updatedDate: new Date(),
+        dueDate: new Date(),
       },
     ];
     service.getTasks().subscribe((tasks) => {
@@ -46,5 +49,28 @@ describe('TaskService', () => {
     const req = httpMock.expectOne(`${serverUrl}/tasks`);
     expect(req.request.method).toBe('GET');
     req.flush(mockTasks);
+  });
+
+  it('should fetch a single task by id', () => {
+    const mockTask: TaskModel = {
+      id: '1',
+      code: 'TASK-001',
+      status: 'To-Do',
+      reporterId: 'r1',
+      assigneeId: 'a1',
+      reporterName: 'Reporter',
+      assigneeName: 'Assignee',
+      summary: 'Test summary',
+      details: 'Test details',
+      creationDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(),
+    };
+    service.getTask('1').subscribe((task) => {
+      expect(task).toEqual(mockTask);
+    });
+    const req = httpMock.expectOne(`${serverUrl}/tasks/1`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockTask);
   });
 });

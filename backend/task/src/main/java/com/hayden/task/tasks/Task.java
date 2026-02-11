@@ -52,8 +52,7 @@ public class Task {
     @Column
     private OffsetDateTime dueDate;
 
-    @OneToMany(mappedBy = "id")
-    @Column
+    @OneToMany(mappedBy = "superTask")
     private List<Task> subtasks;
 
     @ManyToOne
@@ -65,7 +64,7 @@ public class Task {
     private User reporter;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "super_task")
     private Task superTask;
 
 

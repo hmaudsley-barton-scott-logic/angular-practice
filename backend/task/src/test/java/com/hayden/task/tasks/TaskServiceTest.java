@@ -61,6 +61,23 @@ class TaskServiceTest {
     }
 
     @Test
+    void getTask_returnsTaskDto() {
+        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        when(taskRepository.findById(task1)).thenReturn(java.util.Optional.of(task));
+        TaskDto result = taskService.getTask(task1);
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(task1);
+    }
+
+    @Test
+    void getTask_throwsExceptionWhenNotFound() {
+        when(taskRepository.findById(task1)).thenReturn(java.util.Optional.empty());
+        org.junit.jupiter.api.Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            taskService.getTask(task1);
+        });
+    }
+
+    @Test
     void getAllTasks_returnsEmptyList() {
         when(taskRepository.findAll()).thenReturn(Collections.emptyList());
         List<TaskDto> result = taskService.getAllTasks();

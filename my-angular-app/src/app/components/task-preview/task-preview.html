@@ -1,9 +1,9 @@
 <div class="task-compact">
   <div class="task__id">
-    <a class="task__link" href="tasks/{{ task().id }}">{{ task().code }}</a>
+    <a class="task__link" [routerLink]="['/tasks', task().id]">{{ task().code }}</a>
   </div>
   <div class="task__title">
-    <a class="task__link" href="tasks/{{ task().id }}">
+    <a class="task__link" [routerLink]="['/tasks', task().id]">
       {{ task().summary }}
     </a>
   </div>
