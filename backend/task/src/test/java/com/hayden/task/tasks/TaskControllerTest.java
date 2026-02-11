@@ -1,34 +1,40 @@
 package com.hayden.task.tasks;
 
-import com.hayden.task.users.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TaskController.class)
+@ExtendWith(MockitoExtension.class)
 class TaskControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private TaskService taskService;
+    
+    @BeforeEach
+    void setUp() {
+        TaskController taskController = new TaskController(taskService);
+        mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
+    }
 
     UUID task1 = UUID.randomUUID();
     UUID aliceId = UUID.randomUUID();
-    User alice = User.builder().id(aliceId).userName("alice").build();
     UUID bobId = UUID.randomUUID();
-    User bob = User.builder().id(bobId).userName("bob").build();
 
     @Test
     void getTasks_returnsTaskDtos() throws Exception {

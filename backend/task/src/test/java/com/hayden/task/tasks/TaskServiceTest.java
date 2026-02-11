@@ -1,11 +1,11 @@
 package com.hayden.task.tasks;
 
 import com.hayden.task.users.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
 
     @Mock
@@ -21,11 +22,6 @@ class TaskServiceTest {
 
     @InjectMocks
     private TaskService taskService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     UUID task1 = UUID.randomUUID();
     UUID aliceId = UUID.randomUUID();
@@ -72,9 +68,7 @@ class TaskServiceTest {
     @Test
     void getTask_throwsExceptionWhenNotFound() {
         when(taskRepository.findById(task1)).thenReturn(java.util.Optional.empty());
-        org.junit.jupiter.api.Assertions.assertThrows(TaskNotFoundException.class, () -> {
-            taskService.getTask(task1);
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(TaskNotFoundException.class, () -> taskService.getTask(task1));
     }
 
     @Test
