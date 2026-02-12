@@ -73,4 +73,13 @@ describe('TaskService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockTask);
   });
+
+  it('should handle error when fetching a single task by id', () => {
+    service.getTask('1').subscribe((task) => {
+      expect(task).toBeNull();
+    });
+    const req = httpMock.expectOne(`${serverUrl}/tasks/1`);
+    expect(req.request.method).toBe('GET');
+    req.flush(null, { status: 404, statusText: 'Not Found' });
+  });
 });
