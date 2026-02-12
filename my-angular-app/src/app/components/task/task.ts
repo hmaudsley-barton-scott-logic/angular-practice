@@ -4,7 +4,7 @@ import { DatePipe, AsyncPipe } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { map, filter, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task',
