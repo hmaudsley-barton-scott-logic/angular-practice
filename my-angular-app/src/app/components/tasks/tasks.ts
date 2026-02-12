@@ -12,7 +12,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  taskService = inject(TaskService);
+  private taskService = inject(TaskService);
 
   // Get the reactive tasks observable from the service
 
