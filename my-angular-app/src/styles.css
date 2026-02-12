@@ -5,8 +5,6 @@
   --accent-2: #f4b860;
   --card-bg: #efede8;
   --card-border: #efede8;
-  display: block;
-  padding: 24px 16px;
 }
 
 body {
