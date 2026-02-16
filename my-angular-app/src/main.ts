@@ -5,6 +5,4 @@ import { ModuleRegistry, AllCommunityModule, themeQuartz } from 'ag-grid-communi
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export const myTheme = themeQuartz;
-
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
