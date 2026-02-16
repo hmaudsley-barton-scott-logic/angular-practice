@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 import { TaskModel } from '../types/TaskModel';
@@ -29,8 +29,15 @@ export class TaskService {
     );
   }
 
-  getTask(id: string): Observable<TaskModel> {
-    return this.http.get<TaskModel>(this.taskUrl(id));
+  getTask(id: string): Observable<TaskModel | null> {
+    return this.http.get<TaskModel>(this.taskUrl(id)).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+        throw error;
+      }),
+    );
   }
 
   notifyRefresh() {

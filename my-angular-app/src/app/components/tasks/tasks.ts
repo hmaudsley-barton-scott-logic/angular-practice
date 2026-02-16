@@ -26,14 +26,12 @@ export class Tasks {
       field: 'code',
       headerName: 'Code',
       sortable: true,
-      filter: true,
       cellRenderer: TaskLinkRenderer,
     },
     {
       field: 'summary',
       headerName: 'Summary',
       sortable: true,
-      filter: true,
       cellRenderer: TaskLinkRenderer,
     },
     {
@@ -52,7 +50,6 @@ export class Tasks {
       field: 'dueDate',
       headerName: 'Due Date',
       sortable: true,
-      filter: true,
       valueFormatter: (params) => (params.value ? new Date(params.value).toLocaleDateString() : ''),
     },
   ];
