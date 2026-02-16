@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TaskModel } from '../../types/TaskModel';
 import { TaskService } from '../../services/task.service';
 import { Observable, startWith, switchMap } from 'rxjs';
