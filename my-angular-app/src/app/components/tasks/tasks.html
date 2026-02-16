@@ -1,8 +1,11 @@
 <h2>Tasks</h2>
-<section class="tasks">
-  @for (task of tasks$ | async; track task.id) {
-    <app-task-preview [task]="task" />
-  } @empty {
-    <p>No tasks found.</p>
-  }
-</section>
+<div style="height: 500px; width: 100%">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [theme]="theme"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="tasks$ | async"
+  >
+  </ag-grid-angular>
+</div>

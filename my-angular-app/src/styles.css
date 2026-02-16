@@ -12,3 +12,7 @@ body {
   color: var(--ink);
   margin: 0;
 }
+
+html {
+  padding: 1%;
+}

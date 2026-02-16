@@ -1,24 +1,66 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TaskModel } from '../../types/TaskModel';
 import { TaskService } from '../../services/task.service';
-import { TaskPreview } from '../task-preview/task-preview';
 import { Observable, startWith, switchMap } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef, themeQuartz } from 'ag-grid-community';
+import { TaskLinkRenderer } from './task-link-renderer';
 
 @Component({
   selector: 'app-tasks',
-  imports: [TaskPreview, AsyncPipe, CommonModule],
+  imports: [AgGridAngular, CommonModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
 export class Tasks {
   private taskService = inject(TaskService);
 
-  // Get the reactive tasks observable from the service
-
-  // Reactive observable that loads tasks on init and refresh
   tasks$: Observable<TaskModel[]> = this.taskService.refresh$.pipe(
-    startWith(null), // Emit null initially to trigger first load
+    startWith(null),
     switchMap(() => this.taskService.getTasks()),
   );
+
+  columnDefs: ColDef[] = [
+    {
+      field: 'code',
+      headerName: 'Code',
+      sortable: true,
+      filter: true,
+      cellRenderer: TaskLinkRenderer,
+    },
+    {
+      field: 'summary',
+      headerName: 'Summary',
+      sortable: true,
+      filter: true,
+      cellRenderer: TaskLinkRenderer,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      sortable: true,
+      filter: true,
+    },
+    {
+      field: 'assigneeName',
+      headerName: 'Assignee',
+      sortable: true,
+      filter: true,
+    },
+    {
+      field: 'dueDate',
+      headerName: 'Due Date',
+      sortable: true,
+      filter: true,
+      valueFormatter: (params) => (params.value ? new Date(params.value).toLocaleDateString() : ''),
+    },
+  ];
+
+  defaultColDef: ColDef = {
+    flex: 1,
+    minWidth: 100,
+  };
+
+  theme = themeQuartz;
 }
