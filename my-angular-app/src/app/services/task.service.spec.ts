@@ -82,4 +82,13 @@ describe('TaskService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(null, { status: 404, statusText: 'Not Found' });
   });
+
+  it('should return an empty array when getTasks fails', () => {
+    service.getTasks().subscribe((tasks) => {
+      expect(tasks).toEqual([]);
+    });
+    const req = httpMock.expectOne(`${serverUrl}/tasks`);
+    expect(req.request.method).toBe('GET');
+    req.flush('Internal Server Error', { status: 500, statusText: 'Server Error' });
+  });
 });
