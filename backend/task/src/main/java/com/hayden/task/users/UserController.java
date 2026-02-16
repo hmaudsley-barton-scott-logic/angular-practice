@@ -1,4 +1,4 @@
-package com.hayden.task.tasks;
+package com.hayden.task.users;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,21 +14,22 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("tasks")
-public class TaskController {
-    private TaskService taskService;
+@RequestMapping("users")
+public class UserController {
+
+    private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getTasks() {
-        return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> getUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable @NotNull UUID id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable @NotNull UUID id) {
         try {
-            TaskDto task = taskService.getTask(id);
-            return new ResponseEntity<>(task, HttpStatus.OK);
-        } catch (TaskNotFoundException e) {
+            UserDto user = userService.getUser(id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

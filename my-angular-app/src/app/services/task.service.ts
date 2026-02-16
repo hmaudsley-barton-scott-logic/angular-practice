@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 import { TaskModel } from '../types/TaskModel';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable, catchError, of } from 'rxjs';
 
 const serverUrl = `http://localhost:8080`;
 
@@ -21,7 +21,23 @@ export class TaskService {
   private tasksUrl = `${serverUrl}/tasks`;
 
   getTasks(): Observable<TaskModel[]> {
-    return this.http.get<TaskModel[]>(this.tasksUrl);
+    return this.http.get<TaskModel[]>(this.tasksUrl).pipe(
+      catchError((error) => {
+        console.error('Error loading tasks:', error);
+        return of([]);
+      }),
+    );
+  }
+
+  getTask(id: string): Observable<TaskModel | null> {
+    return this.http.get<TaskModel>(this.taskUrl(id)).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+        throw error;
+      }),
+    );
   }
 
   notifyRefresh() {

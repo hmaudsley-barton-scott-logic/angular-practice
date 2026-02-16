@@ -31,6 +31,12 @@ public class Task {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
+    private String code;
+
+    @Column(nullable = false)
+    private String status;
+
     @Column
     private String summary;
 
@@ -43,8 +49,10 @@ public class Task {
     @Column
     private OffsetDateTime updatedDate;
 
-    @OneToMany(mappedBy = "id")
     @Column
+    private OffsetDateTime dueDate;
+
+    @OneToMany(mappedBy = "superTask")
     private List<Task> subtasks;
 
     @ManyToOne
@@ -56,13 +64,15 @@ public class Task {
     private User reporter;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "super_task")
     private Task superTask;
 
 
     public TaskDto toDto() {
         return TaskDto.builder()
                 .id(this.getId())
+                .code(this.getCode())
+                .status(this.getStatus())
                 .reporterId(this.getReporter().getId())
                 .assigneeId(this.getAssignee().getId())
                 .reporterName(this.getReporter().getUserName())
@@ -71,6 +81,7 @@ public class Task {
                 .summary(this.getSummary())
                 .updatedDate(this.getUpdatedDate())
                 .creationDate(this.getCreationDate())
+                .dueDate(this.getDueDate())
                 .build();
     }
 }

@@ -1,8 +1,11 @@
-<section class="tasks">
-  <h2>Tasks</h2>
-  <ul>
-    @for (task of tasks(); track task.id) {
-      <li>{{ task.summary }} - {{ task.reporterName }} -> {{ task.assigneeName }}</li>
-    }
-  </ul>
-</section>
+<h2>Tasks</h2>
+<div style="height: 500px; width: 100%">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [theme]="theme"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="tasks$ | async"
+  >
+  </ag-grid-angular>
+</div>

@@ -17,6 +17,10 @@ import java.util.UUID;
 public class TaskDto {
     private UUID id;
 
+    private String code;
+
+    private String status;
+
     private UUID reporterId;
 
     private UUID assigneeId;
@@ -32,4 +36,6 @@ public class TaskDto {
     private OffsetDateTime creationDate;
 
     private OffsetDateTime updatedDate;
+
+    private OffsetDateTime dueDate;
 }
