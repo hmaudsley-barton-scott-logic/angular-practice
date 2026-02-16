@@ -7,7 +7,13 @@ import { ICellRendererParams } from 'ag-grid-community';
   selector: 'app-task-link-renderer',
   standalone: true,
   imports: [RouterLink],
-  template: `<a class="task__link" [routerLink]="['/tasks', taskId]">{{ value }}</a>`,
+  template: `
+    @if (taskId) {
+      <a class="task__link" [routerLink]="['/tasks', taskId]">{{ value }}</a>
+    } @else {
+      <span>{{ value }}</span>
+    }
+  `,
   styles: [
     `
       .task__link {
