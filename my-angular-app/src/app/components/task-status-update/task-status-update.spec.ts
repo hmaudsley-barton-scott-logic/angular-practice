@@ -1,13 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { TaskStatusUpdate } from './task-status-update';
 import { TaskService } from '../../services/task.service';
-import { of, throwError } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { TaskModel } from '../../types/TaskModel';
 
 describe('TaskStatusUpdate', () => {
   let component: TaskStatusUpdate;
   let fixture: ComponentFixture<TaskStatusUpdate>;
-  let taskServiceSpy: jest.Mocked<TaskService>;
+  let httpMock: HttpTestingController;
+  let taskService: TaskService;
 
   const mockTask: TaskModel = {
     id: '123',
@@ -23,21 +25,23 @@ describe('TaskStatusUpdate', () => {
   };
 
   beforeEach(async () => {
-    taskServiceSpy = {
-      updateTaskStatus: jest.fn(),
-      notifyRefresh: jest.fn(),
-    } as unknown as jest.Mocked<TaskService>;
-
     await TestBed.configureTestingModule({
       imports: [TaskStatusUpdate],
-      providers: [{ provide: TaskService, useValue: taskServiceSpy }],
+      providers: [TaskService, provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
+
+    httpMock = TestBed.inject(HttpTestingController);
+    taskService = TestBed.inject(TaskService);
 
     fixture = TestBed.createComponent(TaskStatusUpdate);
     component = fixture.componentInstance;
     component.taskId = '123';
     component.currentStatus = 'TODO';
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should create', () => {
@@ -48,40 +52,68 @@ describe('TaskStatusUpdate', () => {
     expect(component.selectedStatus()).toBe('TODO');
   });
 
-  it('should update status successfully', () => {
+  it('should update status successfully', fakeAsync(() => {
     const updatedTask = { ...mockTask, status: 'IN_PROGRESS' };
-    taskServiceSpy.updateTaskStatus.mockReturnValue(of(updatedTask));
-
     const emitSpy = jest.spyOn(component.statusUpdated, 'emit');
+    const notifySpy = jest.spyOn(taskService, 'notifyRefresh');
+
     component.onStatusChange('IN_PROGRESS');
 
-    expect(taskServiceSpy.updateTaskStatus).toHaveBeenCalledWith('123', 'IN_PROGRESS');
+    const req = httpMock.expectOne('http://localhost:8080/tasks/123/status');
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ status: 'IN_PROGRESS' });
+
+    req.flush(updatedTask);
+
+    tick(10000);
+
     expect(emitSpy).toHaveBeenCalledWith(updatedTask);
-    expect(taskServiceSpy.notifyRefresh).toHaveBeenCalled();
-  });
+    expect(notifySpy).toHaveBeenCalled();
+  }));
 
   it('should not update if same status selected', () => {
     component.onStatusChange('TODO');
-    expect(taskServiceSpy.updateTaskStatus).not.toHaveBeenCalled();
+    httpMock.expectNone('http://localhost:8080/tasks/123/status');
   });
 
-  it('should handle update error', () => {
-    const error = new Error('Update failed');
-    taskServiceSpy.updateTaskStatus.mockReturnValue(throwError(() => error));
-
+  it('should handle update error', fakeAsync(() => {
     const errorEmitSpy = jest.spyOn(component.statusUpdateError, 'emit');
+
     component.onStatusChange('IN_PROGRESS');
+
+    const req = httpMock.expectOne('http://localhost:8080/tasks/123/status');
+    expect(req.request.method).toBe('PATCH');
+
+    req.error(new ProgressEvent('error'), { status: 500, statusText: 'Server Error' });
+
+    tick(10000);
 
     expect(component.errorMessage()).toBe('Failed to update status. Please try again.');
-    expect(errorEmitSpy).toHaveBeenCalledWith(error);
+    expect(errorEmitSpy).toHaveBeenCalled();
     expect(component.selectedStatus()).toBe('TODO');
+  }));
+
+  it('should reject invalid status', () => {
+    component.onStatusChange('INVALID_STATUS');
+
+    expect(component.errorMessage()).toBe('Invalid status selected.');
+    expect(component.selectedStatus()).toBe('TODO');
+    httpMock.expectNone('http://localhost:8080/tasks/123/status');
   });
 
-  it('should show loading state during update', () => {
-    taskServiceSpy.updateTaskStatus.mockReturnValue(of(mockTask));
+  it('should return display name for valid status', () => {
+    expect(component.getDisplayName('TODO')).toBe('To-Do');
+    expect(component.getDisplayName('IN_PROGRESS')).toBe('In Progress');
+  });
 
-    expect(component.isUpdating()).toBe(false);
-    component.onStatusChange('IN_PROGRESS');
-    expect(component.isUpdating()).toBe(false); // Completes synchronously in test
+  it('should return CSS class for valid status', () => {
+    expect(component.getStatusClass('TODO')).toBe('status-todo');
+    expect(component.getStatusClass('IN_PROGRESS')).toBe('status-in-progress');
+  });
+
+  it('should update selected status on ngOnChanges', () => {
+    component.currentStatus = 'IN_PROGRESS';
+    component.ngOnChanges();
+    expect(component.selectedStatus()).toBe('IN_PROGRESS');
   });
 });
