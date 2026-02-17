@@ -61,7 +61,6 @@ export class TaskStatusUpdate implements OnInit, OnChanges {
 
   /** Internal state */
   selectedStatus = signal<string>('');
-  isUpdating = signal(false);
   errorMessage = signal<string | null>(null);
   availableStatuses = Object.keys(STATUS_CONFIG) as TaskStatus[];
 
