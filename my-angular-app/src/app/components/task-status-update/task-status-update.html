@@ -1,0 +1,23 @@
+<div class="task-status-update" [class.task-status-update--compact]="compact">
+  @if (!compact) {
+    <label class="task-status-update__label" for="status-select"> Status </label>
+  }
+  <div class="task-status-update__control">
+    <select
+      id="status-select"
+      class="task-status-update__select"
+      [ngClass]="'task-status-update__select--' + getStatusClass(selectedStatus())"
+      [ngModel]="selectedStatus()"
+      (ngModelChange)="onStatusChange($event)"
+    >
+      @for (status of availableStatuses; track status) {
+        <option [value]="status">
+          {{ getDisplayName(status) }}
+        </option>
+      }
+    </select>
+  </div>
+  @if (errorMessage() && !compact) {
+    <p class="task-status-update__error">{{ errorMessage() }}</p>
+  }
+</div>

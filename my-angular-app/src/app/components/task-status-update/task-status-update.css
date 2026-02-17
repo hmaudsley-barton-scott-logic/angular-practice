@@ -1,0 +1,138 @@
+/* Status box base style */
+.status-box {
+  display: inline-block;
+  padding: 0.3em 0.8em;
+  border-radius: 0.5em;
+  font-weight: 600;
+  font-size: 0.95em;
+  margin: 0.1em 0;
+  border: 1px solid transparent;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* Status-specific colors */
+.status-box.status-todo {
+  background: #fffbe6;
+  color: #b8860b;
+  border-color: #ffe58f;
+}
+.status-box.status-in-progress {
+  background: #e6f7ff;
+  color: #096dd9;
+  border-color: #91d5ff;
+}
+.status-box.status-in-review {
+  background: #f0f5ff;
+  color: #531dab;
+  border-color: #adc6ff;
+}
+.status-box.status-done {
+  background: #f6ffed;
+  color: #389e0d;
+  border-color: #b7eb8f;
+}
+.status-box.status-cancelled {
+  background: #fff1f0;
+  color: #cf1322;
+  border-color: #ffa39e;
+}
+.task-status-update {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.task-status-update--compact {
+  gap: 0;
+}
+
+.task-status-update--compact .task-status-update__control {
+  width: 100%;
+}
+
+.task-status-update__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.task-status-update__control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-status-update__select {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  cursor: pointer;
+  min-width: 140px;
+  font-weight: 600;
+}
+
+/* Status-specific dropdown colors */
+.task-status-update__select--status-todo {
+  background-color: #fffbe6;
+  border-color: #ffe58f;
+  color: #b8860b;
+}
+
+.task-status-update__select--status-in-progress {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #096dd9;
+}
+
+.task-status-update__select--status-in-review {
+  background-color: #f0f5ff;
+  border-color: #adc6ff;
+  color: #531dab;
+}
+
+.task-status-update__select--status-done {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #389e0d;
+}
+
+.task-status-update__select--status-cancelled {
+  background-color: #fff1f0;
+  border-color: #ffa39e;
+  color: #cf1322;
+}
+
+/* Option-specific colors */
+.task-status-update__select option {
+  background-color: #fff;
+  color: #000;
+}
+
+.task-status-update__select:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.task-status-update__select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.task-status-update__select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.task-status-update__loading {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.task-status-update__error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #dc2626;
+}

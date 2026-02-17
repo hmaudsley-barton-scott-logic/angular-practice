@@ -7,11 +7,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,5 +80,67 @@ class TaskServiceTest {
         when(taskRepository.findAll()).thenReturn(Collections.emptyList());
         List<TaskDto> result = taskService.getAllTasks();
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void updateStatus_updatesTaskStatusSuccessfully() {
+        Task task = Task.builder()
+            .id(task1)
+            .status(TaskStatus.TODO)
+            .assignee(bob)
+            .reporter(alice)
+            .build();
+        Task savedTask = Task.builder()
+            .id(task1)
+            .status(TaskStatus.IN_PROGRESS)
+            .assignee(bob)
+            .reporter(alice)
+            .build();
+        
+        when(taskRepository.findById(task1)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+        
+        TaskDto result = taskService.updateStatus(task1, "IN_PROGRESS");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getStatus()).isEqualTo("IN_PROGRESS");
+        verify(taskRepository).save(any(Task.class));
+        }
+
+    @Test
+    void updateStatus_throwsExceptionWhenTaskNotFound() {
+        when(taskRepository.findById(task1)).thenReturn(Optional.empty());
+        
+        org.junit.jupiter.api.Assertions.assertThrows(
+            TaskNotFoundException.class,
+            () -> taskService.updateStatus(task1, "IN_PROGRESS")
+        );
+        }
+
+    @Test
+    void updateStatus_throwsExceptionWhenStatusInvalid() {
+        org.junit.jupiter.api.Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> taskService.updateStatus(task1, "NOT_A_STATUS")
+        );
+        }
+
+    @Test
+    void updateStatus_setsUpdatedDate() {
+        OffsetDateTime beforeUpdate = OffsetDateTime.now().minusSeconds(1);
+        Task task = Task.builder()
+                .id(task1)
+                .status(TaskStatus.TODO)
+                .assignee(bob)
+                .reporter(alice)
+                .build();
+        
+        when(taskRepository.findById(task1)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        
+        taskService.updateStatus(task1, "DONE");
+        
+        assertThat(task.getUpdatedDate()).isNotNull();
+        assertThat(task.getUpdatedDate()).isAfter(beforeUpdate);
     }
 }
