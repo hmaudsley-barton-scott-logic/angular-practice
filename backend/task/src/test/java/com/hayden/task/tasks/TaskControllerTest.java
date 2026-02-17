@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +42,7 @@ class TaskControllerTest {
         TaskDto taskDto = TaskDto.builder()
                 .id(task1)
                 .code("TASK-001")
-                .status("To-Do")
+                .status("TODO")
                 .reporterId(aliceId)
                 .assigneeId(bobId)
                 .reporterName("alice")
@@ -64,7 +65,7 @@ class TaskControllerTest {
         TaskDto taskDto = TaskDto.builder()
                 .id(task1)
                 .code("TASK-001")
-                .status("To-Do")
+                .status("TODO")
                 .reporterId(aliceId)
                 .assigneeId(bobId)
                 .reporterName("alice")
@@ -86,5 +87,47 @@ class TaskControllerTest {
 
         mockMvc.perform(get("/tasks/{id}", task1))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateTaskStatus_returnsUpdatedTask() throws Exception {
+        TaskDto updatedTaskDto = TaskDto.builder()
+                .id(task1)
+                .code("TASK-001")
+                .status("IN_PROGRESS")
+                .reporterId(aliceId)
+                .assigneeId(bobId)
+                .reporterName("alice")
+                .assigneeName("bob")
+                .summary("Test Task")
+                .details("Details")
+                .build();
+        when(taskService.updateStatus(task1, "IN_PROGRESS")).thenReturn(updatedTaskDto);
+
+        mockMvc.perform(patch("/tasks/{id}/status", task1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\": \"IN_PROGRESS\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(task1.toString()))
+                .andExpect(jsonPath("$.status").value("IN_PROGRESS"));
+    }
+
+    @Test
+    void updateTaskStatus_returnsNotFoundWhenTaskNotFound() throws Exception {
+        when(taskService.updateStatus(task1, "IN_PROGRESS")).thenThrow(new TaskNotFoundException(task1));
+
+        mockMvc.perform(patch("/tasks/{id}/status", task1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\": \"IN_PROGRESS\"}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateTaskStatus_returnsBadRequestWhenStatusBlank() throws Exception {
+        mockMvc.perform(patch("/tasks/{id}/status", task1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\": \"\"}"))
+                .andExpect(status().isBadRequest());
     }
 }

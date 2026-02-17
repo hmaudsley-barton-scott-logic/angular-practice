@@ -3,6 +3,7 @@ package com.hayden.task.tasks;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,29 @@ public class TaskService {
                 .stream()
                 .map(Task::toDto)
                 .toList();
+    }
+
+    /**
+     * Updates the status of a task.
+     * Single responsibility: handles only status update logic.
+     * 
+     * @param id the task ID
+     * @param newStatus the new status value
+     * @return the updated task DTO
+     * @throws TaskNotFoundException if task doesn't exist
+     */
+    public TaskDto updateStatus(UUID id, String newStatus) {
+        if (!TaskStatus.isValid(newStatus)) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+        
+        task.setStatus(TaskStatus.valueOf(newStatus));
+        task.setUpdatedDate(OffsetDateTime.now());
+        
+        Task savedTask = taskRepository.save(task);
+        return savedTask.toDto();
     }
 
 

@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Entity
 @Table(name = "tasks")
@@ -34,8 +36,9 @@ public class Task {
     @Column(nullable = false)
     private String code;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private TaskStatus status;
 
     @Column
     private String summary;
@@ -72,7 +75,7 @@ public class Task {
         return TaskDto.builder()
                 .id(this.getId())
                 .code(this.getCode())
-                .status(this.getStatus())
+                .status(this.getStatus().name())
                 .reporterId(this.getReporter().getId())
                 .assigneeId(this.getAssignee().getId())
                 .reporterName(this.getReporter().getUserName())
