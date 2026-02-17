@@ -7,7 +7,12 @@
     </div>
     <div class="key-facts">
       <div class="task-card__status">
-        <strong>{{ task.status }}</strong>
+        <app-task-status-update
+          [taskId]="task.id"
+          [currentStatus]="task.status"
+          (statusUpdated)="onStatusUpdated()"
+        >
+        </app-task-status-update>
       </div>
       <div class="task-card__person">
         <span>Assigned to:</span>
