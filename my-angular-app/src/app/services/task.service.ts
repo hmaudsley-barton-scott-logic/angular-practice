@@ -2,7 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 import { TaskModel } from '../types/TaskModel';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, delay } from 'rxjs';
+import { TaskStatus } from '../types/TaskStatus';
 
 const serverUrl = `http://localhost:8080`;
 
@@ -37,6 +38,22 @@ export class TaskService {
         }
         throw error;
       }),
+    );
+  }
+
+  /**
+   * Updates the status of a task.
+   * @param id - The task ID
+   * @param status - The new status value
+   * @returns Observable of the updated task
+   */
+  updateTaskStatus(id: string, status: TaskStatus): Observable<TaskModel> {
+    return this.http.patch<TaskModel>(`${this.taskUrl(id)}/status`, { status }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error updating task status:', error);
+        throw error;
+      }),
+      delay(10000), // Simulate network delay for better UX testing
     );
   }
 
