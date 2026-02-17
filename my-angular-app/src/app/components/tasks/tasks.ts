@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, themeQuartz } from 'ag-grid-community';
 import { TaskLinkRenderer } from './task-link-renderer';
+import { TaskStatusRenderer } from './task-status-renderer';
 
 @Component({
   selector: 'app-tasks',
@@ -39,6 +40,7 @@ export class Tasks {
       headerName: 'Status',
       sortable: true,
       filter: true,
+      cellRenderer: TaskStatusRenderer,
     },
     {
       field: 'assigneeName',
