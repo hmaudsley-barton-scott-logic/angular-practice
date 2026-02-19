@@ -9,13 +9,8 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter([]),
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: { subscribe: jest.fn() },
-            snapshot: {},
-          },
-        },
+        // If route mocking is needed, use paramMap: of(...) for a realistic stub
+        // { provide: ActivatedRoute, useValue: { paramMap: of({}) } },
       ],
     }).compileComponents();
   });
