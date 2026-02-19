@@ -3,8 +3,8 @@
   --muted: #768284;
   --accent: #0f6b6b;
   --accent-2: #f4b860;
-  --card-bg: #efede8;
-  --card-border: #efede8;
+  --bg: #efede8;
+  --border: #efede8;
 }
 
 body {
