@@ -54,8 +54,3 @@ nav a.active {
   background-color: var(--accent);
   color: white;
 }
-/* Increase specificity for nav links */
-nav a.active {
-  background-color: var(--accent);
-  color: white;
-}
