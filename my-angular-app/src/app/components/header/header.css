@@ -1,0 +1,54 @@
+header {
+  background-color: var(--bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--ink);
+  margin: 0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.header-title:hover {
+  color: var(--accent);
+}
+
+.header-title > a.active {
+  color: inherit !important;
+  background-color: inherit !important;
+}
+
+nav a {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+}
+
+nav a.active {
+  background-color: var(--accent);
+  color: white;
+}
