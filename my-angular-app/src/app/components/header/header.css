@@ -31,8 +31,9 @@ nav {
 }
 
 .header-title > a.active {
-  color: inherit !important;
-  background-color: inherit !important;
+  color: var(--ink);
+  background-color: transparent;
+  pointer-events: none;
 }
 
 nav a {
@@ -49,6 +50,11 @@ nav a:hover {
   color: var(--accent);
 }
 
+nav a.active {
+  background-color: var(--accent);
+  color: white;
+}
+/* Increase specificity for nav links */
 nav a.active {
   background-color: var(--accent);
   color: white;
