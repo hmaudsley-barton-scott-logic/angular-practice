@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeaderComponent should match snapshot 1`] = `
+<div>
+  <header>
+    <nav>
+      <h1
+        class="header-title"
+      >
+        <a
+          href="/tasks"
+          routerlink="/tasks"
+          routerlinkactive="active"
+        >
+          Task Master
+        </a>
+      </h1>
+      <a
+        href="/tasks"
+        routerlink="/tasks"
+        routerlinkactive="active"
+      >
+        All Tasks
+      </a>
+      <a
+        href="/new"
+        routerlink="/new"
+        routerlinkactive="active"
+      >
+        Create Task
+      </a>
+    </nav>
+  </header>
+</div>
+`;
