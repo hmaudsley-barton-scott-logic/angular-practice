@@ -61,5 +61,15 @@ export class Tasks {
     minWidth: 100,
   };
 
-  theme = themeQuartz;
+  theme = themeQuartz.withParams({
+    accentColor: '#ffcc00',
+    backgroundColor: '#fff5f5',
+    foregroundColor: '#111111',
+    headerBackgroundColor: '#841f1b',
+    headerTextColor: '#ffcc00',
+    borderColor: '#e53935',
+    rowHoverColor: '#ffe0b2',
+    selectedRowBackgroundColor: '#ffcc0033',
+    headerColumnResizeHandleColor: '#ffcc00',
+  });
 }

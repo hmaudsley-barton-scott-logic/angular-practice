@@ -17,10 +17,12 @@ import { ICellRendererParams } from 'ag-grid-community';
   styles: [
     `
       .task__link {
-        color: var(--accent, #0f6b6b);
+        color: #111111;
+        font-weight: 600;
         text-decoration: none;
       }
       .task__link:hover {
+        color: var(--gold, #ffd700);
         text-decoration: underline;
       }
     `,

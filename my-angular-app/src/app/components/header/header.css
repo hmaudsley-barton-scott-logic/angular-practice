@@ -1,9 +1,10 @@
 header {
-  background-color: var(--bg);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-dark, #8b0000);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 3px solid var(--gold, #ffd700);
 }
 
 nav {
@@ -20,24 +21,26 @@ nav {
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  color: var(--ink);
+  color: var(--gold, #ffd700);
   margin: 0;
   text-decoration: none;
   transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .header-title:hover {
-  color: var(--accent);
+  color: #fff176;
 }
 
 .header-title > a.active {
-  color: var(--ink);
+  color: var(--gold, #ffd700);
   background-color: transparent;
   pointer-events: none;
 }
 
 nav a {
-  color: var(--ink);
+  color: #111111;
   font-weight: 500;
   text-decoration: none;
   padding: 0.5rem 1rem;
@@ -46,11 +49,11 @@ nav a {
 }
 
 nav a:hover {
-  background-color: color-mix(in srgb, var(--accent) 20%, transparent);
-  color: var(--accent);
+  background-color: var(--gold, #ffd700);
+  color: #111111;
 }
 
 nav a.active {
-  background-color: var(--accent);
-  color: white;
+  background-color: var(--gold, #ffd700);
+  color: #111111;
 }
