@@ -27,7 +27,7 @@ import { ICellRendererParams } from 'ag-grid-community';
   ],
 })
 export class TaskLinkRenderer implements ICellRendererAngularComp {
-  value: string = '';
+  value = '';
   taskId: string | null = null;
 
   agInit(params: ICellRendererParams): void {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { TaskStatusUpdate } from '../task-status-update/task-status-update';
+import { TaskModel } from '../../types/TaskModel';
 
 /**
  * AG Grid cell renderer for task status.
@@ -32,8 +33,8 @@ import { TaskStatusUpdate } from '../task-status-update/task-status-update';
   ],
 })
 export class TaskStatusRenderer implements ICellRendererAngularComp {
-  status: string = '';
-  taskId: string = '';
+  status = '';
+  taskId = '';
 
   agInit(params: ICellRendererParams): void {
     this.status = params.value;
@@ -46,7 +47,7 @@ export class TaskStatusRenderer implements ICellRendererAngularComp {
     return true;
   }
 
-  onStatusUpdated(updatedTask: any): void {
+  onStatusUpdated(updatedTask: TaskModel): void {
     this.status = updatedTask.status;
   }
 }
