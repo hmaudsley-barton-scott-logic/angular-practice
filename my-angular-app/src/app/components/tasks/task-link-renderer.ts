@@ -17,7 +17,7 @@ import { ICellRendererParams } from 'ag-grid-community';
   styles: [
     `
       .task__link {
-        color: #111111;
+        color: var(--ink, #111111);
         font-weight: 600;
         text-decoration: none;
       }
