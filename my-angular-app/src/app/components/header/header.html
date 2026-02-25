@@ -5,7 +5,11 @@
         >Task Master</a
       >
     </h1>
-    <a routerLink="/tasks" routerLinkActive="active">All Tasks</a>
-    <a routerLink="/new" routerLinkActive="active">Create Task</a>
+    <a routerLink="/tasks" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      >All Tasks</a
+    >
+    <a routerLink="/tasks/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      >Create Task</a
+    >
   </nav>
 </header>
