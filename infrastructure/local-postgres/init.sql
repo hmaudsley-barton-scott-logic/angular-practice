@@ -4,9 +4,8 @@ CREATE DATABASE tasks_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY,
-    user_name VARCHAR(255) NOT NULL
+    user_name VARCHAR(255) NOT NULL UNIQUE
 );
-
 
 DO $$
 BEGIN

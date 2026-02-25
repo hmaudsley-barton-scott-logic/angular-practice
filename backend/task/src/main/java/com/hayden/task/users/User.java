@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,8 +30,7 @@ public class User {
     @GeneratedValue
     private UUID id;
 
-    @Column
-    @UniqueConstraint
+    @Column(unique = true)
     private String userName;
 
     @OneToMany(mappedBy = "assignee")
