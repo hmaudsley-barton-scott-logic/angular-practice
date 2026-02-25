@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     code VARCHAR(50) NOT NULL,
     status task_status NOT NULL,
     summary TEXT NOT NULL,
-    details TEXT NOT NULL,
+    details TEXT,
     creation_date TIMESTAMP NOT NULL,
     updated_date TIMESTAMP NOT NULL,
     due_date TIMESTAMP,
@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS tasks (
 -- Insert placeholder users
 INSERT INTO users (id, user_name) VALUES
     ('1b8abcaa-e5e9-47e6-a3ce-49e3f044fc51', 'Alice'),
-    ('1d6b48e1-64ae-40fd-bde1-b4da08a32fc8', 'Bob');
+    ('1d6b48e1-64ae-40fd-bde1-b4da08a32fc8', 'Bob'),
+    ('2c9f1e5a-8b3d-4f1a-9c2e-5d6f7a8b9c0d', 'Unassigned');
 
 -- Insert placeholder tasks
 INSERT INTO tasks (id, code, status, summary, details, creation_date, updated_date, due_date, assignee_id, reporter_id, super_task)
