@@ -42,12 +42,14 @@ export class NewTask implements OnInit {
     this.errorMessage = '';
 
     const formValue = this.taskForm.value;
+    const assigneeId = formValue.assigneeId || '2c9f1e5a-8b3d-4f1a-9c2e-5d6f7a8b9c0d'; // Default to "Unassigned" user
+
     this.taskService
       .createTask({
         summary: formValue.summary,
         details: formValue.details || undefined,
         reporterId: formValue.reporterId,
-        assigneeId: formValue.assigneeId,
+        assigneeId: assigneeId,
         dueDate: formValue.dueDate || undefined,
       })
       .subscribe({
