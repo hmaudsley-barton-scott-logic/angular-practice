@@ -96,7 +96,7 @@ public class TaskService {
         return savedTask.toDto();
     }
 
-    private String generateTaskCode() {
+    private synchronized String generateTaskCode() {
         long nextNumber = taskRepository.countAllTasks() + 1;
         return String.format("TASK-%03d", nextNumber);
     }
