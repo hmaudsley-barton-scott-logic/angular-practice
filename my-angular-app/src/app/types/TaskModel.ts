@@ -5,7 +5,7 @@ export interface TaskModel {
   reporterId: string;
   assigneeId: string;
   reporterName: string;
-  assigneeName: string;
+  assigneeName?: string;
   summary: string;
   details?: string;
   creationDate: Date;

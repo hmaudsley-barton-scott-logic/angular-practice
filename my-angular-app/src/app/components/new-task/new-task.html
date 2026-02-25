@@ -1,0 +1,84 @@
+<div class="new-task">
+  <h2>Create New Task</h2>
+
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="summary">Summary <span class="required">*</span></label>
+      <input
+        id="summary"
+        type="text"
+        formControlName="summary"
+        placeholder="Brief description of the task"
+      />
+      @if (taskForm.get('summary')?.touched && taskForm.get('summary')?.errors) {
+        <span class="field-error">
+          @if (taskForm.get('summary')?.errors?.['required']) {
+            Summary is required.
+          } @else if (taskForm.get('summary')?.errors?.['maxlength']) {
+            Summary must be 200 characters or fewer.
+          }
+        </span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="details">Details</label>
+      <textarea
+        id="details"
+        formControlName="details"
+        rows="5"
+        placeholder="Additional details about the task"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reporterId">Reporter <span class="required">*</span></label>
+        <select id="reporterId" formControlName="reporterId">
+          <option value="" disabled>Select reporter</option>
+          @for (user of users$ | async; track user.id) {
+            <option [value]="user.id">{{ user.userName }}</option>
+          }
+        </select>
+        @if (
+          taskForm.get('reporterId')?.touched && taskForm.get('reporterId')?.errors?.['required']
+        ) {
+          <span class="field-error">Reporter is required.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="assigneeId">Assignee </label>
+        <select id="assigneeId" formControlName="assigneeId">
+          <option value="" disabled>Select assignee</option>
+          @for (user of users$ | async; track user.id) {
+            <option [value]="user.id">{{ user.userName }}</option>
+          }
+        </select>
+        @if (
+          taskForm.get('assigneeId')?.touched && taskForm.get('assigneeId')?.errors?.['required']
+        ) {
+          <span class="field-error">Assignee is required.</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="dueDate">Due Date</label>
+      <input id="dueDate" type="date" formControlName="dueDate" />
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="submitting">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="submitting">
+        {{ submitting ? 'Creating...' : 'Create Task' }}
+      </button>
+    </div>
+  </form>
+</div>
