@@ -10,6 +10,6 @@ public interface TaskRepository extends JpaRepository<Task,UUID> {
     public List<Task> findByReporterId(UUID id);
     public List<Task> findByAssigneeId(UUID id);
 
-    @Query("SELECT COUNT(t) FROM Task t")
-    long countAllTasks();
+    @Query(value = "SELECT nextval('task_code_seq')", nativeQuery = true)
+    Long getNextTaskCodeNumber();
 }

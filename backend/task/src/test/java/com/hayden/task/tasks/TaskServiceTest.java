@@ -158,7 +158,7 @@ class TaskServiceTest {
         
         when(userRepository.findById(bobId)).thenReturn(Optional.of(bob));
         when(userRepository.findById(aliceId)).thenReturn(Optional.of(alice));
-        when(taskRepository.countAllTasks()).thenReturn(0L);
+        when(taskRepository.getNextTaskCodeNumber()).thenReturn(1L);
         when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> {
             Task task = invocation.getArgument(0);
             task.setId(task1);

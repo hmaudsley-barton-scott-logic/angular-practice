@@ -34,6 +34,9 @@ INSERT INTO users (id, user_name) VALUES
     ('1d6b48e1-64ae-40fd-bde1-b4da08a32fc8', 'Bob'),
     ('2c9f1e5a-8b3d-4f1a-9c2e-5d6f7a8b9c0d', 'Unassigned');
 
+-- Sequence for atomic task code generation
+CREATE SEQUENCE task_code_seq START WITH 3;
+
 -- Insert placeholder tasks
 INSERT INTO tasks (id, code, status, summary, details, creation_date, updated_date, due_date, assignee_id, reporter_id, super_task)
 VALUES
