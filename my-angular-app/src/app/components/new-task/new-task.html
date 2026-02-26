@@ -59,11 +59,6 @@
             <option [value]="user.id">{{ user.userName }}</option>
           }
         </select>
-        @if (
-          taskForm.get('assigneeId')?.touched && taskForm.get('assigneeId')?.errors?.['required']
-        ) {
-          <span class="field-error">Assignee is required.</span>
-        }
       </div>
     </div>
 
