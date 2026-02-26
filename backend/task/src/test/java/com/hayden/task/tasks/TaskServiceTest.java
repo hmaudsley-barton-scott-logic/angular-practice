@@ -38,7 +38,7 @@ class TaskServiceTest {
 
     @Test
     void getAllTasks_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findAll()).thenReturn(tasks);
         List<TaskDto> result = taskService.getAllTasks();
@@ -47,7 +47,7 @@ class TaskServiceTest {
 
     @Test
     void getTasksByReporter_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findByReporterId(aliceId)).thenReturn(tasks);
         List<TaskDto> result = taskService.getTasksByReporter(aliceId);
@@ -56,7 +56,7 @@ class TaskServiceTest {
 
     @Test
     void getTasksByAssignee_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findByAssigneeId(bobId)).thenReturn(tasks);
         List<TaskDto> result = taskService.getTasksByAssignee(bobId);
@@ -65,7 +65,7 @@ class TaskServiceTest {
 
     @Test
     void getTask_returnsTaskDto() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         when(taskRepository.findById(task1)).thenReturn(java.util.Optional.of(task));
         TaskDto result = taskService.getTask(task1);
         assertThat(result).isNotNull();
