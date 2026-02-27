@@ -2,7 +2,7 @@
   <h2>Create New Task</h2>
 
   @if (errorMessage) {
-    <div class="error-banner">{{ errorMessage }}</div>
+    <div class="error-banner" role="alert" aria-live="polite">{{ errorMessage }}</div>
   }
 
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
