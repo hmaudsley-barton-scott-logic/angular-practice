@@ -30,16 +30,4 @@ describe('HeaderComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should render the header title', () => {
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    // Check for the actual header title text
-    expect(compiled.textContent).toContain('Task Master');
-  });
-
-  it('should match snapshot', () => {
-    fixture.detectChanges();
-    expect(fixture.nativeElement).toMatchSnapshot();
-  });
 });

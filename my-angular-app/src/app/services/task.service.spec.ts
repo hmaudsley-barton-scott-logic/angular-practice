@@ -91,4 +91,78 @@ describe('TaskService', () => {
     expect(req.request.method).toBe('GET');
     req.flush('Internal Server Error', { status: 500, statusText: 'Server Error' });
   });
+
+  it('should create a new task', () => {
+    const newTask = {
+      summary: 'New Task',
+      details: 'Task details',
+      reporterId: 'r1',
+      assigneeId: 'a1',
+      dueDate: new Date().toISOString(),
+    };
+    const createdTask: TaskModel = {
+      id: '2',
+      code: 'TASK-002',
+      status: 'To-Do',
+      reporterId: 'r1',
+      assigneeId: 'a1',
+      reporterName: 'Reporter',
+      assigneeName: 'Assignee',
+      summary: newTask.summary,
+      details: newTask.details,
+      creationDate: new Date(),
+      updatedDate: new Date(),
+      dueDate: new Date(newTask.dueDate),
+    };
+    service.createTask(newTask).subscribe((task) => {
+      expect(task).toEqual(createdTask);
+    });
+    const req = httpMock.expectOne(`${serverUrl}/tasks`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(newTask);
+    req.flush(createdTask);
+  });
+
+  it('should handle error when creating a new task', () => {
+    const newTask = {
+      summary: 'New Task',
+      details: 'Task details',
+      reporterId: 'r1',
+      assigneeId: 'a1',
+      dueDate: new Date().toISOString(),
+    };
+    service.createTask(newTask).subscribe({
+      next: () => fail('Expected error, but got success response'),
+      error: (error) => {
+        expect(error.status).toBe(500);
+        expect(error.statusText).toBe('Server Error');
+      },
+    });
+    const req = httpMock.expectOne(`${serverUrl}/tasks`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(newTask);
+    req.flush('Internal Server Error', { status: 500, statusText: 'Server Error' });
+  });
+
+  it('should fetch users', () => {
+    const mockUsers = [
+      { id: 'u1', name: 'User One' },
+      { id: 'u2', name: 'User Two' },
+    ];
+    service.getUsers().subscribe((users) => {
+      expect(users).toEqual(mockUsers);
+    });
+    const req = httpMock.expectOne(`${serverUrl}/users`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockUsers);
+  });
+
+  it('should return an empty array when getUsers fails', () => {
+    service.getUsers().subscribe((users) => {
+      expect(users).toEqual([]);
+    });
+    const req = httpMock.expectOne(`${serverUrl}/users`);
+    expect(req.request.method).toBe('GET');
+    req.flush('Internal Server Error', { status: 500, statusText: 'Server Error' });
+  });
 });
