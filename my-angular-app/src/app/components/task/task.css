@@ -28,7 +28,6 @@
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.6875rem;
-  color: var(--accent);
   margin: 0;
 }
 
@@ -93,8 +92,6 @@
 }
 
 .task-card__person {
-  background: #ffffff;
-  border-radius: 0.875rem;
   padding: 0.75rem 0.875rem;
 }
 
