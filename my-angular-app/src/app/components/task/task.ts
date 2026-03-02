@@ -4,8 +4,13 @@ import { DatePipe, AsyncPipe } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 import { TaskStatusUpdate } from '../task-status-update/task-status-update';
+
+interface TaskState {
+  loading: boolean;
+  task: TaskModel | null;
+}
 
 @Component({
   selector: 'app-task',
@@ -18,16 +23,20 @@ export class Task {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly refreshTrigger$ = new Subject<void>();
 
-  task$: Observable<TaskModel | null> = this.refreshTrigger$.pipe(
+  taskState$: Observable<TaskState> = this.refreshTrigger$.pipe(
     startWith(undefined),
     switchMap(() => this.activatedRoute.paramMap),
     map((params) => params.get('taskId')),
     switchMap((id) => {
       if (id === null) {
-        return of(null);
+        return of({ loading: false, task: null });
       }
-      return this.taskService.getTask(id);
+      return this.taskService.getTask(id).pipe(
+        map((task) => ({ loading: false, task })),
+        startWith({ loading: true, task: null }),
+      );
     }),
+    shareReplay(1),
   );
 
   onStatusUpdated() {

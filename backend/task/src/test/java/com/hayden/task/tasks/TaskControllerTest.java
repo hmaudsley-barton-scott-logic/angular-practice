@@ -1,5 +1,6 @@
 package com.hayden.task.tasks;
 
+import com.hayden.task.users.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +13,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +29,7 @@ class TaskControllerTest {
 
     @Mock
     private TaskService taskService;
-    
+
     @BeforeEach
     void setUp() {
         TaskController taskController = new TaskController(taskService);
@@ -128,6 +131,57 @@ class TaskControllerTest {
         mockMvc.perform(patch("/tasks/{id}/status", task1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"status\": \"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void createTask_returnsCreatedTask() throws Exception {
+        TaskDto createdTask = TaskDto.builder()
+                .id(UUID.randomUUID())
+                .code("TASK-002")
+                .status("TODO")
+                .reporterId(aliceId)
+                .assigneeId(bobId)
+                .reporterName("alice")
+                .assigneeName("bob")
+                .summary("New Task")
+                .details("Details")
+                .build();
+        when(taskService.createTask(any(CreateTaskRequest.class))).thenReturn(createdTask);
+
+        String json = String.format("{\"summary\":\"%s\",\"details\":\"%s\",\"assigneeId\":\"%s\",\"reporterId\":\"%s\"}",
+                "New Task", "Details", bobId, aliceId);
+
+        mockMvc.perform(post("/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.summary").value("New Task"))
+                .andExpect(jsonPath("$.code").value("TASK-002"));
+    }
+
+    @Test
+    void createTask_returnsNotFoundWhenUserNotFound() throws Exception {
+        when(taskService.createTask(any(CreateTaskRequest.class))).thenThrow(new UserNotFoundException(aliceId));
+
+        String json = String.format("{\"summary\":\"%s\",\"details\":\"%s\",\"assigneeId\":\"%s\",\"reporterId\":\"%s\"}",
+                "New Task", "Details", bobId, aliceId);
+
+        mockMvc.perform(post("/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createTask_returnsBadRequestWhenSummaryBlank() throws Exception {
+        String json = String.format("{\"summary\":\"\",\"details\":\"Details\",\"assigneeId\":\"%s\",\"reporterId\":\"%s\"}",
+                bobId, aliceId);
+
+        mockMvc.perform(post("/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isBadRequest());
     }
 }

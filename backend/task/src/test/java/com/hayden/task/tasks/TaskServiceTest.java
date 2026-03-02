@@ -24,6 +24,9 @@ class TaskServiceTest {
     @Mock
     private TaskRepository taskRepository;
 
+    @Mock
+    private com.hayden.task.users.UserRepository userRepository;
+
     @InjectMocks
     private TaskService taskService;
 
@@ -35,7 +38,7 @@ class TaskServiceTest {
 
     @Test
     void getAllTasks_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findAll()).thenReturn(tasks);
         List<TaskDto> result = taskService.getAllTasks();
@@ -44,7 +47,7 @@ class TaskServiceTest {
 
     @Test
     void getTasksByReporter_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findByReporterId(aliceId)).thenReturn(tasks);
         List<TaskDto> result = taskService.getTasksByReporter(aliceId);
@@ -53,7 +56,7 @@ class TaskServiceTest {
 
     @Test
     void getTasksByAssignee_returnsTaskDtos() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         List<Task> tasks = List.of(task);
         when(taskRepository.findByAssigneeId(bobId)).thenReturn(tasks);
         List<TaskDto> result = taskService.getTasksByAssignee(bobId);
@@ -62,7 +65,7 @@ class TaskServiceTest {
 
     @Test
     void getTask_returnsTaskDto() {
-        Task task = Task.builder().id(task1).assignee(bob).reporter(alice).build();
+        Task task = Task.builder().id(task1).status(TaskStatus.TODO).assignee(bob).reporter(alice).build();
         when(taskRepository.findById(task1)).thenReturn(java.util.Optional.of(task));
         TaskDto result = taskService.getTask(task1);
         assertThat(result).isNotNull();
@@ -142,5 +145,64 @@ class TaskServiceTest {
         
         assertThat(task.getUpdatedDate()).isNotNull();
         assertThat(task.getUpdatedDate()).isAfter(beforeUpdate);
+    }
+
+    @Test
+    void createTask_createsAndReturnsTaskDto() {
+        CreateTaskRequest request = CreateTaskRequest.builder()
+                .summary("Test task")
+                .details("Test details")
+                .assigneeId(bobId)
+                .reporterId(aliceId)
+                .build();
+        
+        when(userRepository.findById(bobId)).thenReturn(Optional.of(bob));
+        when(userRepository.findById(aliceId)).thenReturn(Optional.of(alice));
+        when(taskRepository.getNextTaskCodeNumber()).thenReturn(1L);
+        when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> {
+            Task task = invocation.getArgument(0);
+            task.setId(task1);
+            return task;
+        });
+        
+        TaskDto result = taskService.createTask(request);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getSummary()).isEqualTo("Test task");
+        assertThat(result.getStatus()).isEqualTo("TODO");
+        verify(taskRepository).save(any(Task.class));
+    }
+
+    @Test
+    void createTask_throwsExceptionWhenAssigneeNotFound() {
+        CreateTaskRequest request = CreateTaskRequest.builder()
+                .summary("Test task")
+                .assigneeId(bobId)
+                .reporterId(aliceId)
+                .build();
+        
+        when(userRepository.findById(bobId)).thenReturn(Optional.empty());
+        
+        org.junit.jupiter.api.Assertions.assertThrows(
+            com.hayden.task.users.UserNotFoundException.class,
+            () -> taskService.createTask(request)
+        );
+    }
+
+    @Test
+    void createTask_throwsExceptionWhenReporterNotFound() {
+        CreateTaskRequest request = CreateTaskRequest.builder()
+                .summary("Test task")
+                .assigneeId(bobId)
+                .reporterId(aliceId)
+                .build();
+        
+        when(userRepository.findById(bobId)).thenReturn(Optional.of(bob));
+        when(userRepository.findById(aliceId)).thenReturn(Optional.empty());
+        
+        org.junit.jupiter.api.Assertions.assertThrows(
+            com.hayden.task.users.UserNotFoundException.class,
+            () -> taskService.createTask(request)
+        );
     }
 }

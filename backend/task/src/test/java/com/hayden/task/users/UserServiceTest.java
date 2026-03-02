@@ -63,4 +63,19 @@ class UserServiceTest {
         List<UserDto> result = userService.getAllUsers();
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void addUser_createsAndReturnsUserDto() {
+        String username = "charlie";
+        UUID charlieId = UUID.randomUUID();
+        User charlie = User.builder().id(charlieId).userName(username).build();
+        
+        when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenReturn(charlie);
+        
+        UserDto result = userService.addUser(username);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getUserName()).isEqualTo(username);
+        org.mockito.Mockito.verify(userRepository).save(org.mockito.ArgumentMatchers.any(User.class));
+    }
 }

@@ -30,7 +30,7 @@ public class User {
     @GeneratedValue
     private UUID id;
 
-    @Column
+    @Column(unique = true)
     private String userName;
 
     @OneToMany(mappedBy = "assignee")

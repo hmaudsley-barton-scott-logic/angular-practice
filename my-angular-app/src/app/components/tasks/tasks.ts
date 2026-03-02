@@ -56,11 +56,6 @@ export class Tasks {
     },
   ];
 
-  defaultColDef: ColDef = {
-    flex: 1,
-    minWidth: 100,
-  };
-
   theme = themeQuartz.withParams({
     accentColor: '#ffcc00',
     backgroundColor: '#fff5f5',

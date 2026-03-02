@@ -24,4 +24,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(id));
         return user.toDto();
     }
+
+    public UserDto addUser(String userName) {
+        User user = User.builder()
+                .userName(userName)
+                .build();
+        userRepository.save(user);
+        return user.toDto();
+    }
 }

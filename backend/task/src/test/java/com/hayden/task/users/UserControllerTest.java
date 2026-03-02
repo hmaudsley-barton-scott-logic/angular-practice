@@ -12,8 +12,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,5 +69,21 @@ class UserControllerTest {
 
         mockMvc.perform(get("/users/{id}", aliceId))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void addUser_createsAndReturnsUser() throws Exception {
+        String username = "charlie";
+        UUID charlieId = UUID.randomUUID();
+        UserDto charlieDto = UserDto.builder().id(charlieId).userName(username).build();
+        when(userService.addUser(username)).thenReturn(charlieDto);
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .content(username))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(charlieId.toString()))
+                .andExpect(jsonPath("$.userName").value(username));
     }
 }

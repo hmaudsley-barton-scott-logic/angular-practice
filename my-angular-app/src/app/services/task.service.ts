@@ -31,14 +31,17 @@ export class TaskService {
   }
 
   getTask(id: string): Observable<TaskModel | null> {
-    return this.http.get<TaskModel>(this.taskUrl(id)).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          return of(null);
-        }
-        throw error;
-      }),
-    );
+    return this.http
+      .get<TaskModel>(this.taskUrl(id))
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw error;
+        }),
+      )
+      .pipe(delay(1000)); // Simulate network delay for better UX testing
   }
 
   /**
@@ -57,7 +60,38 @@ export class TaskService {
     );
   }
 
+  createTask(task: CreateTaskRequest): Observable<TaskModel> {
+    return this.http.post<TaskModel>(this.tasksUrl, task).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error creating task:', error);
+        throw error;
+      }),
+    );
+  }
+
+  getUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${serverUrl}/users`).pipe(
+      catchError((error) => {
+        console.error('Error loading users:', error);
+        return of([]);
+      }),
+    );
+  }
+
   notifyRefresh() {
     this.refreshSubject.next();
   }
+}
+
+export interface CreateTaskRequest {
+  summary: string;
+  details?: string;
+  reporterId: string;
+  assigneeId: string;
+  dueDate?: string;
+}
+
+export interface UserModel {
+  id: string;
+  userName: string;
 }
