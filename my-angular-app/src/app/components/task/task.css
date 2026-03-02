@@ -122,3 +122,15 @@
   flex-direction: row;
   gap: 1.25rem;
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--muted);
+}
+
+.loading p {
+  font-size: 1.125rem;
+}

@@ -31,14 +31,17 @@ export class TaskService {
   }
 
   getTask(id: string): Observable<TaskModel | null> {
-    return this.http.get<TaskModel>(this.taskUrl(id)).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          return of(null);
-        }
-        throw error;
-      }),
-    );
+    return this.http
+      .get<TaskModel>(this.taskUrl(id))
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw error;
+        }),
+      )
+      .pipe(delay(1000)); // Simulate network delay for better UX testing
   }
 
   /**
